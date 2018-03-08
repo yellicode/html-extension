@@ -9,7 +9,7 @@ import * as opts from './options';
 const voidHtmlElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr'];
 
 /**
- * A very basic CodeWriter for writing HTML. This HtmlWriter supports the Yellicode tutorial code. 
+ * A very basic CodeWriter for writing HTML.
  */
 export class HtmlWriter extends CodeWriter {
     constructor(textWriter: TextWriter) {
