@@ -1,6 +1,6 @@
 {
   "name": "@yellicode/html",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "HTML extension for Yellicode - an extensible code generator.",
   "license": "MIT",
   "main": "dist/bundles/html.umd.js",
@@ -9,7 +9,7 @@
   "types": "dist/types/html.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yellicode/yellicode-html.git"
+    "url": "github:yellicode/html-extension.git"
   },
   "dependencies": {
     "@yellicode/templating": "^0.1.2"

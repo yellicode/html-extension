@@ -11,7 +11,7 @@ Optional: a string containing the exact value of the 'class' attribute (so, prov
 class names separated by a space).
 
 ## <a name="html-writer"></a> HtmlWriter class
-A very basic CodeWriter for writing HTML. This HtmlWriter supports the Yellicode tutorial code. 
+A very basic CodeWriter for writing HTML.
 
 ### HtmlWriter.writeElement(tagName, options, innerHtml) : void
 * tagName: string
