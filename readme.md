@@ -1,14 +1,12 @@
-## Yellicode HTML
-
-### HTML package for Yellicode
-
-Yellicode lets you build your own code generators with TypeScript. It consists of a Node.js CLI (Command Line Interface) as well as extensible APIs, making it easy for developers to create, share and re-use code generators.
-
-Check out [our website](https://www.yellicode.com) for more.
-
-This extension contains a HtmlWriter class and other utilities that make is easier to generate HTML code from a Yellicode template.
+# HTML extension for Yellicode
+Generate HTML code using powerful TypeScript code generation templates! This extension contains a code writer and other utilities that make is easier to generate HTML code from a Yellicode template.
 
 License: MIT
+
+## About Yellicode
+Yellicode lets you build your own code generation templates with TypeScript. It consists of a Node.js CLI and extensible APIs, making it easy for developers to create, share and re-use code generators for their favorite programming languages and frameworks.
+
+Check out [our website](https://www.yellicode.com) for more.
 
 ## Using the HTML package
 ### Prerequisites
