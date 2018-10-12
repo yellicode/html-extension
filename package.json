@@ -5,7 +5,7 @@
   "keywords": [
     "code generator",
     "code generation",
-    "HTML"    
+    "HTML"
   ],
   "license": "MIT",
   "main": "dist/bundles/html.umd.js",
@@ -17,10 +17,10 @@
     "url": "github:yellicode/html-extension.git"
   },
   "dependencies": {
-    "@yellicode/templating": "^0.3.3"
+    "@yellicode/templating": "^1.0.0"
   },
   "devDependencies": {
-    "rollup": "^0.50.0"
+    "rollup": "^0.66.6"
   },
   "scripts": {
     "build:es5": "tsc",
