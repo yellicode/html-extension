@@ -12,11 +12,6 @@ Check out [our website](https://www.yellicode.com) for more.
 ### Prerequisites
 In order to run a code generation template, you must have the CLI installed (@yellicode/cli) globally and have a valid *codegenconfig.json* file in your working directory. Please refer to the [installation instructions](https://www.yellicode.com/docs/installation) and the [quick start](https://www.yellicode.com/docs/quickstart) for more.
 
-You should also have the *@yellicode/model* package installed in your working directory:
-```
-npm install @yellicode/model --save-dev
-```
-
 ### Installation
 Open a terminal/command prompt in your working directory and install this package as a dev dependency:
 
@@ -26,17 +21,21 @@ npm install @yellicode/html --save-dev
 
 ### Sample template
 This basic example generates a HTML file containing a Bootstrap form for each class in the model. For a more advanced example with Angular support, check out
-the Yellicode [bookstore tutorial](https://www.yellicode.com/docs/tutorial/bookstore).
+the Yellicode [bookstore tutorial](https://www.yellicode.com/docs/tutorial/bookstore). In order to run this example, you should also have the *@yellicode/elements* package installed in your working directory:
+
+```
+npm install @yellicode/elements --save-dev
+```
 
 ```ts
-import * as model from '@yellicode/model';
+import * as elements from '@yellicode/elements';
 import { Generator, TextWriter, NameUtility } from '@yellicode/templating';
 import { HtmlWriter } from '@yellicode/html';
 
 /**
  * Generates the contents of a Bootstrap form-group for the provided property. 
  */
-const formGroupTemplate  = (writer: HtmlWriter, att: model.Property) => {
+const formGroupTemplate  = (writer: HtmlWriter, att: elements.Property) => {
     const htmlInputId = NameUtility.camelToKebabCase(att.name);     
     const isRequired = att.isRequiredAndSinglevalued();
 
@@ -52,10 +51,10 @@ const formGroupTemplate  = (writer: HtmlWriter, att: model.Property) => {
     
     // Input
     let htmlInputType: string;
-    if (model.isPrimitiveBoolean(att.type)) {
+    if (elements.isPrimitiveBoolean(att.type)) {
         htmlInputType = 'checkbox';
     }
-    else if (model.isPrimitiveInteger(att.type)) {
+    else if (elements.isPrimitiveInteger(att.type)) {
         htmlInputType = 'number';
     }
     else htmlInputType = 'text'; 
@@ -67,7 +66,7 @@ const formGroupTemplate  = (writer: HtmlWriter, att: model.Property) => {
 /**
  * Generates a Bootstrap form for the provided model Class. 
  */
-const formTemplate = (writer: HtmlWriter, c: model.Class) => {
+const formTemplate = (writer: HtmlWriter, c: elements.Class) => {
     const allAttributes = c.ownedAttributes;    
     writer.writeElement('form', {}, () => { 
         allAttributes.forEach((att) => {
@@ -93,8 +92,8 @@ const formTemplate = (writer: HtmlWriter, c: model.Class) => {
     });
 }
 
-Generator.getModel().then((pack: model.Package) => {
-    pack.getAllClasses().forEach((eachClass) => {
+Generator.getModel().then((model: elements.Model) => {
+    model.getAllClasses().forEach((eachClass) => {
         Generator.generate({ outputFile: `${eachClass.name}.html` }, (textWriter: TextWriter) => {
             const htmlWriter = new HtmlWriter(textWriter);
             formTemplate(htmlWriter, eachClass);
