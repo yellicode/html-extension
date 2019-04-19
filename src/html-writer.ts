@@ -1,11 +1,13 @@
 /**
- * This file contains a sample HtmlWriter that makes generating HTML code easier.
+ * This file contains a simple HtmlWriter that makes generating HTML code easier.
  */
 
 import { TextWriter, CodeWriter } from '@yellicode/templating';
 import * as opts from './options';
 
-// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+/**
+ * https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+ */
 const voidHtmlElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr'];
 
 /**
@@ -16,7 +18,7 @@ export class HtmlWriter extends CodeWriter {
         super(textWriter);
     }
 
-    private writeOpeningTag(tagName: string, options: opts.HtmlElementOptions) {
+    private writeOpeningTag(tagName: string, options: opts.HtmlElementOptions): this {
         this.writeIndent();
         this.write(`<${tagName}`);
         if (options.classNames) {
@@ -34,6 +36,7 @@ export class HtmlWriter extends CodeWriter {
             }
         }
         this.write('>');
+        return this;
     }
 
     private writeElementFromCallback(tagName: string, options: opts.HtmlElementOptions, innerHtml: (writer: HtmlWriter) => void): void {
@@ -56,9 +59,21 @@ export class HtmlWriter extends CodeWriter {
         else this.writeEndOfLine(); // this is a void element
     }
 
-    public writeElement(tagName: string, options: opts.HtmlElementOptions | null, innerHtml?: string): void;
-    public writeElement(tagName: string, options: opts.HtmlElementOptions | null, innerHtml?: (writer: HtmlWriter) => void): void;
-    public writeElement(tagName: string, options: opts.HtmlElementOptions | null, contents: any | string): void {
+    /**
+     * Writes a HTML element with the specified tag name and optional inner HTML string.
+     * @param tagName The HTML tag name (without opening or closing brackets).
+     * @param options Specifies any class names or HTML attributes to be added.
+     * @param innerHtml An optional HTML string containing the element's inner HTML.
+     */
+    public writeElement(tagName: string, options: opts.HtmlElementOptions | null, innerHtml?: string): this;
+    /**
+     * Writes a HTML element with the specified tag name and optional callback function that writes the inner HTML.
+     * @param tagName The HTML tag name (without opening or closing brackets).
+     * @param options Specifies any class names or HTML attributes to be added.
+     * @param innerHtml An optional callback function that writes the element's inner HTML.
+     */
+    public writeElement(tagName: string, options: opts.HtmlElementOptions | null, innerHtml?: (writer: HtmlWriter) => void): this;
+    public writeElement(tagName: string, options: opts.HtmlElementOptions | null, contents: any | string): this {
         if (!options) options = {};
         if (!contents || typeof contents == "string") {
             this.writeElementFromString(tagName, options, contents);
@@ -66,7 +81,6 @@ export class HtmlWriter extends CodeWriter {
         else {
             this.writeElementFromCallback(tagName, options, contents);
         }
+        return this;
     }
-
-
 }
