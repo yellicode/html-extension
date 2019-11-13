@@ -2,7 +2,7 @@
  * This file contains a simple HtmlWriter that makes generating HTML code easier.
  */
 
-import { TextWriter, CodeWriter } from '@yellicode/templating';
+import { TextWriter, CodeWriter } from '@yellicode/core';
 import * as opts from './options';
 
 /**
