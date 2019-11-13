@@ -13,12 +13,28 @@ class names separated by a space).
 ## <a name="html-writer"></a> HtmlWriter class
 A very basic CodeWriter for writing HTML.
 
-### HtmlWriter.writeElement(tagName, options, innerHtml) : void
+### HtmlWriter.writeElement(tagName, options, innerHtml) : this
+Writes a HTML element with the specified tag name and optional inner HTML string.
+Writes a HTML element with the specified tag name and optional callback function that writes the inner HTML.
 * tagName: string
+
+   The HTML tag name (without opening or closing brackets).
 * options: [HtmlElementOptions](#html-element-options)
+
+   Specifies any class names or HTML attributes to be added.
 * innerHtml: string
-### HtmlWriter.writeElement(tagName, options, innerHtml) : void
+
+   An optional HTML string containing the element's inner HTML.
+### HtmlWriter.writeElement(tagName, options, innerHtml) : this
+Writes a HTML element with the specified tag name and optional inner HTML string.
+Writes a HTML element with the specified tag name and optional callback function that writes the inner HTML.
 * tagName: string
+
+   The HTML tag name (without opening or closing brackets).
 * options: [HtmlElementOptions](#html-element-options)
+
+   Specifies any class names or HTML attributes to be added.
 * innerHtml: (writer: HtmlWriter) => void
+
+   An optional callback function that writes the element's inner HTML.
 
