@@ -29,7 +29,8 @@ npm install @yellicode/elements --save-dev
 
 ```ts
 import * as elements from '@yellicode/elements';
-import { Generator, TextWriter, NameUtility } from '@yellicode/templating';
+import { Generator } from '@yellicode/templating';
+import { TextWriter, NameUtility } from '@yellicode/core';
 import { HtmlWriter } from '@yellicode/html';
 
 /**
