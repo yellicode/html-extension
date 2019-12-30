@@ -25,15 +25,20 @@ export class HtmlWriter extends CodeWriter {
             this.write(` class="${options.classNames}"`);
         }
         if (options.attributes) {
-            for (const key in options.attributes) {
-                if (options.attributes.hasOwnProperty(key)) {
-                    const value = options.attributes[key];
-                    if (typeof value == "boolean") {
-                        if (value) this.write(` ${key}`);
-                    }
-                    else this.write(` ${key}="${options.attributes[key]}"`);
+            Object.keys(options.attributes).forEach(key => {
+                const value = options.attributes![key];                
+                if (typeof value === 'boolean') {
+                    // The presence of a boolean attribute on an element represents the true value, 
+                    // and the absence of the attribute represents the false value.
+                    if (value === true) this.write(` ${key}`);
                 }
-            }
+                else if (Array.isArray(value)) {
+                    // A string array: concat the values.
+                    this.write(` ${key}="${value.join(' ')}"`);
+                }
+                else
+                    this.write(` ${key}="${value}"`);
+            });
         }
         this.write('>');
         return this;

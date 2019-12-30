@@ -1,4 +1,6 @@
-﻿/**
+﻿export declare type AttributeValueType = string | string[] | boolean | number;
+
+/**
  * Defines the options for html elements.
  */
 export interface HtmlElementOptions {
@@ -10,5 +12,5 @@ export interface HtmlElementOptions {
     /**
      * Optional: contains a dictionary of all attributes to be added to the element.
      */
-    attributes?: { [name: string]: string | boolean };
+    attributes?: { [name: string]: AttributeValueType };
 }
