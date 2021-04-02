@@ -26,9 +26,9 @@ export class HtmlWriter extends CodeWriter {
         }
         if (options.attributes) {
             Object.keys(options.attributes).forEach(key => {
-                const value = options.attributes![key];                
+                const value = options.attributes![key];
                 if (typeof value === 'boolean') {
-                    // The presence of a boolean attribute on an element represents the true value, 
+                    // The presence of a boolean attribute on an element represents the true value,
                     // and the absence of the attribute represents the false value.
                     if (value === true) this.write(` ${key}`);
                 }
@@ -46,22 +46,53 @@ export class HtmlWriter extends CodeWriter {
 
     private writeElementFromCallback(tagName: string, options: opts.HtmlElementOptions, innerHtml: (writer: HtmlWriter) => void): void {
         this.writeOpeningTag(tagName, options);
-        this.writeEndOfLine();
-        this.increaseIndent();
-        if (innerHtml) innerHtml(this);
-        this.decreaseIndent();
-        this.writeLine(`</${tagName}>`);
+
+        if (innerHtml) {
+            // The HTML <pre> tag defines preformatted text preserving both whitespace and line breaks in the HTML document. So, when writing one,
+            // don't write extra whitespace and line breaks during innerHtml
+            if (tagName === 'pre') {
+                this.suppressIndent().suppressEndOfLine();
+            }
+            else {
+                this.increaseIndent();
+            }
+
+            if (innerHtml) {
+                this.writeEndOfLine();
+                innerHtml(this);
+            }
+
+            if (tagName === 'pre') {
+                this.resumeIndent().resumeEndOfLine();
+            }
+            else {
+                this.decreaseIndent();
+            }
+
+        }
+
+        this.writeLine(`</${tagName}>`); // if no innerHtml: ends the current line with a closing tag
     };
 
     private writeElementFromString(tagName: string, options: opts.HtmlElementOptions, innerHtml?: string): void {
         this.writeOpeningTag(tagName, options);
         if (innerHtml) {
+            // The HTML <pre> tag defines preformatted text preserving both whitespace and line breaks in the HTML document. So, when writing one,
+            // don't write extra whitespace and line breaks during innerHtml
+            if (tagName === 'pre') {
+                this.suppressIndent().suppressEndOfLine();
+            }
             this.write(innerHtml);
+            if (tagName === 'pre') {
+                this.resumeIndent().resumeEndOfLine();
+            }
         }
         if (innerHtml || voidHtmlElements.indexOf(tagName) === -1) {
             this.writeEndOfLine(`</${tagName}>`);
         }
-        else this.writeEndOfLine(); // this is a void element
+        else {
+            this.writeEndOfLine(); // this is a void element
+        }
     }
 
     /**
