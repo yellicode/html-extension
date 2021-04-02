@@ -1,6 +1,6 @@
 {
   "name": "@yellicode/html",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "HTML extension for Yellicode - an extensible code generator.",
   "keywords": [
     "code generator",
