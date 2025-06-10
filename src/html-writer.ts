@@ -14,12 +14,20 @@ const voidHtmlElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'in
  * A very basic CodeWriter for writing HTML.
  */
 export class HtmlWriter extends CodeWriter {
+    /**
+     * True if the last end tag written was ended with a EOL. Avoids multiple EOL's (= empty lines)
+     * when closing nested elements.
+     */
+    private closedWithEOL = false;
+
     constructor(textWriter: TextWriter) {
         super(textWriter);
     }
 
     private writeOpeningTag(tagName: string, options: opts.HtmlElementOptions): this {
-        this.writeIndent();
+        if (!options.succeedsText) {
+            this.writeIndent();
+        }
         this.write(`<${tagName}`);
         if (options.classNames) {
             this.write(` class="${options.classNames}"`);
@@ -45,6 +53,7 @@ export class HtmlWriter extends CodeWriter {
     }
 
     private writeElementFromCallback(tagName: string, options: opts.HtmlElementOptions, innerHtml: (writer: HtmlWriter) => void): void {
+        this.closedWithEOL = false;
         this.writeOpeningTag(tagName, options);
 
         if (innerHtml) {
@@ -58,7 +67,9 @@ export class HtmlWriter extends CodeWriter {
             }
 
             if (innerHtml) {
-                this.writeEndOfLine();
+                if (!options.startsWithText) {
+                    this.writeEndOfLine(); // EOL after the opening tag
+                }
                 innerHtml(this);
             }
 
@@ -68,13 +79,28 @@ export class HtmlWriter extends CodeWriter {
             else {
                 this.decreaseIndent();
             }
-
         }
 
-        this.writeLine(`</${tagName}>`); // if no innerHtml: ends the current line with a closing tag
+        this.writeClosingTag(tagName, options);
     };
 
+    private writeClosingTag(tagName: string, options: opts.HtmlElementOptions, isEmptyElement?: boolean): void {
+        // Write the closing tag on a new line, unless there is text before the closing tag or the element is empty.
+        if (!options.endsWithText && !isEmptyElement) {
+            if (!this.closedWithEOL) {
+                this.writeEndOfLine();
+            }
+            this.writeIndent();
+        }
+        this.write(`</${tagName}>`);
+        if (!options.preceedsText) {
+            this.writeEndOfLine();
+            this.closedWithEOL = true;
+        }
+    }
+
     private writeElementFromString(tagName: string, options: opts.HtmlElementOptions, innerHtml?: string): void {
+        this.closedWithEOL = false;
         this.writeOpeningTag(tagName, options);
         if (innerHtml) {
             // The HTML <pre> tag defines preformatted text preserving both whitespace and line breaks in the HTML document. So, when writing one,
@@ -88,11 +114,13 @@ export class HtmlWriter extends CodeWriter {
             }
         }
         if (innerHtml || voidHtmlElements.indexOf(tagName) === -1) {
-            this.writeEndOfLine(`</${tagName}>`);
+            this.writeClosingTag(tagName, options, innerHtml == null);
+            // this.writeEndOfLine(`</${tagName}>`);
         }
         else {
-            this.writeEndOfLine(); // this is a void element
+            this.writeEndOfLine(); // this is a void element            
         }
+        this.closedWithEOL = true;
     }
 
     /**
